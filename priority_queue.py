@@ -1,3 +1,4 @@
+from heapq import  heappop
 class Element:
 
     def __init__(self, value, priority):
@@ -5,23 +6,37 @@ class Element:
         self.priority = priority
 
 
-class PriorityQueue:
+class PriorityQueue():
     def __init__(self):
         self.heap = []
 
     def __len__(self):
         return len(self.heap)
 
+    def search(self, value):
+        for i in range(len(self.heap)):
+            if self.heap[i].value == value:
+                return "element exists",True
+        return "there is no such value"
+
+    def peek(self):
+        self.heap.pop()
+        return "peek value ",self.heap[0].value
+
+
+    def pop(self):
+        self.heap[len(self.heap) - 1], self.heap[0] = self.heap[0], self.heap[len(self.heap) - 1]
+        deleted = self.heap.pop()
+        self.goUp(0)
+        return "popped value", deleted.value
+
+
     def add(self, value, priority):
         self.heap.append(Element(value, priority))
         # adding element to  the end
         self.goUp(len(self) - 1)
 
-    def delete(self):
-        self.heap[len(self) - 1], self.heap[0] = self.heap[0], self.heap[len(self) - 1]
-        root = self.heap.delete()
-        self.goDown(0)
-        return root.value
+
 
     def goUp(self, index):
         root_index = (index - 1) // 2
@@ -45,20 +60,18 @@ class PriorityQueue:
             self.heap[index], self.heap[parent] = self.heap[parent], self.heap[index]
             self.goDown(index)
 
-    def peek(self):
-        return self.heap[0].value
 
 if __name__ == '__main__':
     priority = PriorityQueue()
-    priority.add(45, 0)
-    priority.add(31, 1)
-    priority.add(20, 2)
-    priority.add(14, 3)
-    priority.add(7, 4)
-    priority.add(12, 5)
-    priority.add(18, 6)
-    priority.add(11, 7)
-    priority.add(7, 8)
+    priority.add(2, 4)
+    priority.add(5, 1)
+    priority.add(1, 7)
+    priority.add(4, 8)
+    print(priority.peek())
+    print(priority.search(4))
+    print(priority.pop())
+
+
 
 
 
